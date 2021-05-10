@@ -48,7 +48,7 @@ caseModule.delete = async (ids, result) => {
     await sql.promise().query(
       "DELETE FROM cases WHERE " + query_str
     );
-
+ 
     result(null, { ids: ids });
   } catch (err) {
     result(err, null);
