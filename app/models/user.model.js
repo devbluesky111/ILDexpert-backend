@@ -7,7 +7,6 @@ const userModule = function(userGroup) {
   this.email = userGroup.email;
   this.password = userGroup.password;
   this.identity = userGroup.identity;
-  this.role = userGroup.role;
 };
 
 userModule.create = async (body, result) => {
@@ -21,8 +20,8 @@ userModule.create = async (body, result) => {
       result(null, {status: 'fail'});
     } else {
       const res = await sql.promise().query(
-        "INSERT INTO user SET name = ?, email = ?, password = ?, identity = ?, role = ?, created_at = NOW(), last_login = NOW()", 
-        [body.name, body.email, body.password, body.identity, 'staff']
+        "INSERT INTO user SET name = ?, email = ?, password = ?, identity = ?, role = 'staff', created = NOW(), last_login = NOW()", 
+        [body.name, body.email, body.password, body.identity]
       );
   
       result(null, { status: 'success', id: res.insertId });
