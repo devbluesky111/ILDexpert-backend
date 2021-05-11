@@ -50,40 +50,6 @@ exports.delete = (req, res) => {
   userModule.delete(req.body.ids, (err, data) => resCallback(res, err, data, "Some error occurred while deleting the 'users'."));
 };
 
-exports.toggle_restrict = (req, res) => {
-  // Validate request
-  if (!req.body) {
-    res.status(400).send({
-      message: "Content can not be empty!"
-    });
-  }
-
-  userModule.toggle_restrict(req.body, (err, data) => resCallback(res, err, data, "Some error occurred while deleting the 'users'."));
-};
-
-exports.pending_solve = (req, res) => {
-  // Validate request
-  if (!req.body) {
-    res.status(400).send({
-      message: "Content can not be empty!"
-    });
-  }
-
-  userModule.pending_solve(req.body, (err, data) => resCallback(res, err, data, "Some error occurred while deleting the 'users'."));
-};
-
-exports.pending_membership = (req, res) => {
-  // Validate request
-  if (!req.body) {
-    res.status(400).send({
-      message: "Content can not be empty!"
-    });
-  }
-
-  userModule.pending_membership(req.body, (err, data) => resCallback(res, err, data, "Some error occurred while deleting the 'users'."));
-};
-
-
 exports.getAll = (req, res) => {
   userModule.getAll(req.body, (err, data) => resCallback(res, err, data, "Some error occurred while getting the 'user data'."));
 };

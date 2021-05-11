@@ -9,8 +9,5 @@ module.exports = app => {
   app.post("/check_login", userModule.check_login);
   app.post("/logout", userModule.logout);
   app.post("/delete_user", userModule.delete);
-  app.post("/pending_solve", userModule.pending_solve);
-  app.post("/toggle_restrict", userModule.toggle_restrict);
-  app.post("/pending_membership", userModule.pending_membership);
   
 }
