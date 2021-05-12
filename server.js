@@ -37,6 +37,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 require("./app/routes/user.routes.js")(app);
 require("./app/routes/case.routes.js")(app);
 require("./app/routes/question.routes.js")(app);
+require("./app/routes/result.routes.js")(app);
 
 // set port, listen for requests
 app.listen(port, () => {

@@ -19,13 +19,13 @@ userModule.create = async (body, result) => {
       result(null, {status: 'fail'});
     } else {
       const res = await sql.promise().query(
-        "INSERT INTO user SET name = ?, email = ?, password = ?, identity = ?, role = 'staff', created = NOW(), last_login = NOW()", 
+        "INSERT INTO user SET name = ?, email = ?, password = ?, identity = ?, role = 'user', created = NOW(), last_login = NOW()", 
         [body.name, body.email, body.password, body.identity]
       );
   
       result(null, { status: 'success', id: res.insertId });
     }
-   
+
   } catch (err) {
     result(err, null);
   };
@@ -104,8 +104,8 @@ userModule.create = async (body, result) => {
 // };
 
 userModule.login = async (req, res) => {
-  // console.log('---ss--->', req.session.email);
-  // console.log('---cc--->', req.cookies.rememberMeEmail);
+  // console.log('ss--->', req.session.email);
+  // console.log('cc--->', req.cookies.rememberMeEmail);
   try {
     const [resp, field] = await sql.promise().query(
       "SELECT * FROM user WHERE email = ? AND password = ? ",
@@ -126,10 +126,9 @@ userModule.login = async (req, res) => {
         res_data = resp;
       }
       if(respo.length !== 0) {
-        req.session.email = respo.email;
+        req.session.email = respo[0].email;
         res_data = respo;
       }
-      console.log('login',res_data);
       res.send({status: 'success', data : res_data});
     }
   } catch (err) {
@@ -138,8 +137,8 @@ userModule.login = async (req, res) => {
 };
 
 userModule.check_login = async (req, res) => {
-  console.log('---ss--->', req.session.email);
-  console.log('---cc--->', req.cookies.rememberMeEmail);
+  // console.log('---ss--->', req.session.email);
+  // console.log('---cc--->', req.cookies.rememberMeEmail);
   try { 
     if (req.session.email) {
       const resp = await sql.promise().query(
