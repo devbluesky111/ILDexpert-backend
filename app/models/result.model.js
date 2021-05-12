@@ -57,62 +57,13 @@ resultModule.addSelectedQuestions = async (body, result) => {
   };
 };
 
-resultModule.delete = async (ids, result) => {
-  try {    
-    let query = [];
-    ids.map((id)=>{
-      query.push('id = ' + id);
-    });
-    let query_str = query.join(' OR ');
-    
-    await sql.promise().query(
-      "DELETE FROM results WHERE " + query_str
-    );
-
-    result(null, { ids: ids });
-  } catch (err) {
-    result(err, null);
-  };
-};
-
 resultModule.getAll = async (result) => {
   try {
     const [res, fields] = await sql.promise().query(
-      "SELECT * FROM results ORDER BY id"
+      "SELECT results.id, `user`.`name`, `user`.identity, cases.`subject` ,results.image_show_time, results.question_show_time,	results.selected_questions FROM results LEFT JOIN cases on cases.`id` = results.case_id LEFT JOIN `user` on results.user_email = `user`.email"
     );
     
     result(null, res);
-  } catch (err) {
-    result(err, null);
-  };
-};
-
-resultModule.get_result_by_id = async (body, result) => {
-  try {
-    const [res, fields] = await sql.promise().query(
-      "SELECT * FROM results WHERE id = ? ",
-      [body.id]
-    );
-    result(null, res);
-  } catch (err) {
-    result(err, null);
-  };
-};
-
-resultModule.upload = async (body, today, filename, result) => {
-  try {
-    let new_file;
-    new_file = today + '/' + filename;
-
-    const [res, fields] = await sql.promise().query(
-      "UPDATE results SET " + body.name + " = ? WHERE id = ?", 
-      [new_file, body.id]
-    );
-    if (res.affectedRows === 0) {
-      throw { kind: "not_found" };
-    }
-
-    result(null, {file: new_file});
   } catch (err) {
     result(err, null);
   };
