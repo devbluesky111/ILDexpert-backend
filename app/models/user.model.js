@@ -19,7 +19,7 @@ userModule.create = async (body, result) => {
       result(null, {status: 'fail'});
     } else {
       const res = await sql.promise().query(
-        "INSERT INTO user SET name = ?, email = ?, password = ?, identity = ?, role = 'user', created = NOW(), last_login = NOW()", 
+        "INSERT INTO user SET name = ?, email = ?, password = ?, identity = ?, role = 'staff', created = NOW(), last_login = NOW()", 
         [body.name, body.email, body.password, body.identity]
       );
   
@@ -129,6 +129,7 @@ userModule.login = async (req, res) => {
         req.session.email = respo[0].email;
         res_data = respo;
       }
+      console.log('login', res_data);
       res.send({status: 'success', data : res_data});
     }
   } catch (err) {
@@ -141,7 +142,7 @@ userModule.check_login = async (req, res) => {
   // console.log('---cc--->', req.cookies.rememberMeEmail);
   try { 
     if (req.session.email) {
-      const resp = await sql.promise().query(
+      const [resp, fieldss] = await sql.promise().query(
         "SELECT * FROM user WHERE email = ? ",
         [req.session.email]
       );
